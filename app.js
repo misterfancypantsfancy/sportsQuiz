@@ -98,8 +98,14 @@ function restartQuiz() {
   restartButton.style.display = "none"
   submitButton.style.display = "block"
   score.style.display = 'none'
+  
+  // Fetch new questions from the API
+  const newResults = JSON.parse(httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple"))
+  results.results = newResults.results
+  
   renderQuestion(currentQuestionIndex)
 }
+
 
 function submitAnswer() {
   checkAnswer()
