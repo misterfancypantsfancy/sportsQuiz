@@ -15,11 +15,11 @@ const resultContainer = document.getElementById("result")
 const restartButton = document.getElementById("restart-btn")
 const score = document.getElementById("score")
 
-const questionDiv = document.querySelector(".questionDiv")
-const questionNumber = document.querySelector(".questionNumber")
-const questionText = document.querySelector(".questionText")
-const optionsDiv = document.querySelector(".optionsDiv")
-const optionDiv = document.querySelector(".option")
+const questionDiv = document.getElementById("questionDiv")
+const questionNumber = document.getElementById("questionNumber")
+const questionText = document.getElementById("questionText")
+const optionsDiv = document.getElementById("optionsDiv")
+const optionDiv = document.getElementById("option")
 const input = document.getElementById("input")
 const label = document.getElementById("label")
 
@@ -89,7 +89,6 @@ function restartQuiz() {
   
   renderQuestion(currentQuestionIndex)
 }
-
 
 function submitAnswer() {
   checkAnswer()

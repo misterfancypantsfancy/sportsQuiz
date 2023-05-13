@@ -37,9 +37,9 @@ function renderQuestion(index) {
   let optionsDiv = document.createElement("div")
   optionsDiv.classList.add("options")
 
-  let options = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5)
+  let choices = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5)
 
-  options.forEach((option) => {
+  choices.forEach((option) => {
     let optionDiv = document.createElement("div")
     optionDiv.classList.add("option")
 
