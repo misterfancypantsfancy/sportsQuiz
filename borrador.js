@@ -15,14 +15,6 @@ const resultContainer = document.getElementById("result")
 const restartButton = document.getElementById("restart-btn")
 const score = document.getElementById("score")
 
-const questionDiv = document.querySelector(".questionDiv")
-const questionNumber = document.querySelector(".questionNumber")
-const questionText = document.querySelector(".questionText")
-const optionsDiv = document.querySelector(".optionsDiv")
-const optionDiv = document.querySelector(".option")
-const input = document.getElementById("input")
-const label = document.getElementById("label")
-
 let currentQuestionIndex = 0
 let correctAnswers = 0
 
@@ -31,19 +23,44 @@ function renderQuestion(index) {
 
   let question = results.results[index]
 
+  let questionDiv = document.createElement("div")
+  questionDiv.classList.add("question")
+
+  let questionNumber = document.createElement("p")
   questionNumber.innerText = "Question " + (index + 1)
-  
+  questionNumber.classList.add("question-number")
+
+  let questionText = document.createElement("p")
   questionText.innerHTML = question.question
-  
+  questionText.classList.add("question-text")
+
+  let optionsDiv = document.createElement("div")
+  optionsDiv.classList.add("options")
+
   let options = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5)
 
   options.forEach((option) => {
-    
+    let optionDiv = document.createElement("div")
+    optionDiv.classList.add("option")
+
+    let input = document.createElement("input")
+    input.setAttribute("type", "radio")
     input.setAttribute("name", "question-" + index)
     input.setAttribute("value", option)
 
+    let label = document.createElement("label")
     label.innerHTML = option
+
+    optionDiv.appendChild(input)
+    optionDiv.appendChild(label)
+    optionsDiv.appendChild(optionDiv)
   })
+
+  questionDiv.appendChild(questionNumber)
+  questionDiv.appendChild(questionText)
+  questionDiv.appendChild(optionsDiv)
+
+  questionContainer.appendChild(questionDiv)
 }
 
 function checkAnswer() {
