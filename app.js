@@ -33,9 +33,9 @@ function renderQuestion(index) {
   
   questionText.innerHTML = question.question
   
-  let options = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5)
+  let shuffle = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5)
 
-  options.forEach((option, idx) => {
+  shuffle.forEach((option, idx) => {
     
     const input = document.getElementById("input" + (idx + 1));
     const label = document.getElementById("label" + (idx + 1));
@@ -70,7 +70,6 @@ function checkAnswer() {
     score.style.display = 'block'
     submitButton.style.display = 'none'
   } else {
-    // questionContainer.innerHTML = ""
     renderQuestion(currentQuestionIndex)
   }
 }
@@ -84,7 +83,6 @@ function restartQuiz() {
   submitButton.style.display = "block"
   score.style.display = 'none'
   
-  // Fetch new questions from the API
   const newResults = JSON.parse(httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple"))
   results.results = newResults.results
   
