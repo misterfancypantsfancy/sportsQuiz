@@ -20,8 +20,6 @@ const questionNumber = document.getElementById("questionNumber")
 const questionText = document.getElementById("questionText")
 const optionsDiv = document.getElementById("optionsDiv")
 const optionDiv = document.getElementById("option")
-const input = document.getElementById("input")
-const label = document.getElementById("label")
 
 let currentQuestionIndex = 0
 let correctAnswers = 0
@@ -37,8 +35,11 @@ function renderQuestion(index) {
   
   let options = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5)
 
-  options.forEach((option) => {
+  options.forEach((option, idx) => {
     
+    const input = document.getElementById("input" + (idx + 1));
+    const label = document.getElementById("label" + (idx + 1));
+
     input.setAttribute("name", "question-" + index)
     input.setAttribute("value", option)
 
