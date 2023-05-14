@@ -3,10 +3,11 @@ body {
 font-family: Arial, sans-serif;
 text-align: center;
 padding: 20px;
+background: rgb(36, 36, 112);
 }
 
 h1 {
-color: #333;
+color: #585656;
 font-size: 32px;
 margin-bottom: 20px;
 }

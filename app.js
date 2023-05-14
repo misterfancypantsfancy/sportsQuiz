@@ -70,7 +70,7 @@ function checkAnswer() {
     score.style.display = 'block'
     submitButton.style.display = 'none'
   } else {
-    questionContainer.innerHTML = ""
+    // questionContainer.innerHTML = ""
     renderQuestion(currentQuestionIndex)
   }
 }
