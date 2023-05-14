@@ -1,71 +1,59 @@
 
-body {
-font-family: Arial, sans-serif;
-text-align: center;
-padding: 20px;
-background: rgb(36, 36, 112);
+body{
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: rgb(36, 36, 112);
 }
 
-h1 {
-color: #585656;
-font-size: 32px;
-margin-bottom: 20px;
+h1{
+    color: #585656;
+    font-size: 32px;
+    margin-bottom: 20px;
 }
 
-#start-container {
-margin-bottom: 20px;
+#start-container{
+    margin-bottom: 20px;
 }
 
-button {
-padding: 10px 20px;
-font-size: 16px;
-background-color: #4CAF50;
-color: #fff;
-border: none;
-border-radius: 4px;
-cursor: pointer;
+button{
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-#question-container {
-margin-bottom: 20px;
+#question-container{
+    margin-bottom: 20px;
 }
 
-.question {
-margin-bottom: 10px;
+#questionNumber{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-.question-number {
-font-size: 18px;
-font-weight: bold;
-margin-bottom: 5px;
+#questionText{
+    font-size: 16px;
 }
 
-.question-text {
-font-size: 16px;
+input{
+    display: block;
+    margin-left: 500px;
 }
 
-.options {
-margin-top: 10px;
-}
-
-#option {
-margin-bottom: 5px;
-display: block;
-}
-
-input[type="radio"] {
-margin-right: 5px;
-}
-
-#result, #score {
-margin-bottom: 10px;
-}
-
-#restart-btn {
-margin-top: 10px;
-margin: 0 auto;
+#result, #score{
+    margin-bottom: 10px;
 }
 
 #submit-btn{
-margin: 0 auto;
+    margin: 0 auto;
+}
+
+#restart-btn{
+    margin-top: 10px;
+    margin: 0 auto;
 }
