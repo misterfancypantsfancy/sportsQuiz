@@ -42,6 +42,7 @@ function renderQuestion(index) {
 
     input.setAttribute("name", "question-" + index)
     input.setAttribute("value", option)
+    input.checked = false
 
     label.innerHTML = option
   })

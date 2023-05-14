@@ -15,6 +15,12 @@ const resultContainer = document.getElementById("result")
 const restartButton = document.getElementById("restart-btn")
 const score = document.getElementById("score")
 
+const questionDiv = document.getElementById("questionDiv")
+const questionNumber = document.getElementById("questionNumber")
+const questionText = document.getElementById("questionText")
+const optionsDiv = document.getElementById("optionsDiv")
+const optionDiv = document.getElementById("option")
+
 let currentQuestionIndex = 0
 let correctAnswers = 0
 
@@ -23,44 +29,22 @@ function renderQuestion(index) {
 
   let question = results.results[index]
 
-  let questionDiv = document.createElement("div")
-  questionDiv.classList.add("question")
-
-  let questionNumber = document.createElement("p")
   questionNumber.innerText = "Question " + (index + 1)
-  questionNumber.classList.add("question-number")
-
-  let questionText = document.createElement("p")
+  
   questionText.innerHTML = question.question
-  questionText.classList.add("question-text")
-
-  let optionsDiv = document.createElement("div")
-  optionsDiv.classList.add("options")
-
+  
   let shuffle = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5)
 
-  shuffle.forEach((option) => {
-    let optionDiv = document.createElement("div")
-    optionDiv.classList.add("option")
+  shuffle.forEach((option, idx) => {
+    
+    const input = document.getElementById("input" + (idx + 1));
+    const label = document.getElementById("label" + (idx + 1));
 
-    let input = document.createElement("input")
-    input.setAttribute("type", "radio")
     input.setAttribute("name", "question-" + index)
     input.setAttribute("value", option)
 
-    let label = document.createElement("label")
     label.innerHTML = option
-
-    optionDiv.appendChild(input)
-    optionDiv.appendChild(label)
-    optionsDiv.appendChild(optionDiv)
   })
-
-  questionDiv.appendChild(questionNumber)
-  questionDiv.appendChild(questionText)
-  questionDiv.appendChild(optionsDiv)
-
-  questionContainer.appendChild(questionDiv)
 }
 
 function checkAnswer() {
@@ -86,7 +70,6 @@ function checkAnswer() {
     score.style.display = 'block'
     submitButton.style.display = 'none'
   } else {
-    questionContainer.innerHTML = ""
     renderQuestion(currentQuestionIndex)
   }
 }
@@ -94,19 +77,16 @@ function checkAnswer() {
 function restartQuiz() {
   currentQuestionIndex = 0
   correctAnswers = 0
-  questionContainer.innerHTML = ""
   resultContainer.innerText = ""
   restartButton.style.display = "none"
   submitButton.style.display = "block"
   score.style.display = 'none'
   
-  // Fetch new questions from the API
   const newResults = JSON.parse(httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple"))
   results.results = newResults.results
   
   renderQuestion(currentQuestionIndex)
 }
-
 
 function submitAnswer() {
   checkAnswer()
