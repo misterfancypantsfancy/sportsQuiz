@@ -77,7 +77,6 @@ function checkAnswer() {
 function restartQuiz() {
   currentQuestionIndex = 0
   correctAnswers = 0
-  questionContainer.innerHTML = ""
   resultContainer.innerText = ""
   restartButton.style.display = "none"
   submitButton.style.display = "block"
