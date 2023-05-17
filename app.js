@@ -1,3 +1,4 @@
+
 function httpGet(theUrl) {
   return fetch(theUrl)
     .then(response => {
@@ -17,9 +18,6 @@ let results;
 httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple")
   .then(data => {
     results = data;
-    startButton.style.display = "none";
-    submitButton.style.display = "block";
-    renderQuestion(currentQuestionIndex);
   });
 
 const startButton = document.getElementById("start-btn");
