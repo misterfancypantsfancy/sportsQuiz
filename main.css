@@ -3,11 +3,11 @@ body{
     font-family: Arial, sans-serif;
     text-align: center;
     padding: 20px;
-    background: rgb(36, 36, 112);
+    background: rgb(23, 47, 99);
 }
 
 h1{
-    color: #585656;
+    color: #e0e4a5;
     font-size: 32px;
     margin-bottom: 20px;
 }
@@ -28,6 +28,7 @@ button{
 
 #question-container{
     margin-bottom: 20px;
+    color: rgb(228, 225, 88);
 }
 
 #questionNumber{
@@ -47,6 +48,7 @@ input{
 
 #result, #score{
     margin-bottom: 10px;
+    color: rgb(228, 225, 88);
 }
 
 #submit-btn{
