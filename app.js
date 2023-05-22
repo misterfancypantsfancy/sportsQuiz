@@ -122,10 +122,8 @@ fetch('http://localhost:3000/api/hello')
     return response.json();
   })
   .then(data => {
-    // Handle the response data
     console.log(data.message);
   })
   .catch(error => {
-    // Handle any errors that occur during the fetch request
     console.error('Error:', error);
   });
