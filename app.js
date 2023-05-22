@@ -114,15 +114,30 @@ startButton.addEventListener("click", () => {
   renderQuestion(currentQuestionIndex)
 })
 
-fetch('http://localhost:3000/api/hello')
+// fetch('http://localhost:3000/api/hello')
+//   .then(response => {
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok');
+//     }
+//     return response.json();
+//   })
+//   .then(data => {
+//     console.log(data.message);
+//   })
+//   .catch(error => {
+//     console.error('Error:', error);
+//   });
+
+fetch('http://localhost:3000/routesProject/server.html') // Fetch the server.html content
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    return response.json();
+    return response.text();
   })
-  .then(data => {
-    console.log(data.message);
+  .then(html => {
+    // Inject the server.html content into the userDropdown select element
+    document.getElementById('userDropdown').innerHTML = html;
   })
   .catch(error => {
     console.error('Error:', error);
