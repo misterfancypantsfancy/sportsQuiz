@@ -41,9 +41,8 @@ button{
     font-size: 16px;
 }
 
-input{
+.selection{
     display: block;
-    margin-left: 500px;
 }
 
 #result, #score{
