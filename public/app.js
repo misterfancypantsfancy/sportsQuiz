@@ -127,17 +127,3 @@ fetch('http://localhost:3000/api/hello')
   .catch(error => {
     console.error('Error:', error);
   });
-
-// fetch('http://localhost:3000/routesProject/server.html')
-//   .then(response => {
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
-//     }
-//     return response.text();
-//   })
-//   .then(html => {
-//     document.getElementById('userDropdown').innerHTML = html;
-//   })
-//   .catch(error => {
-//     console.error('Error:', error);
-//   });
