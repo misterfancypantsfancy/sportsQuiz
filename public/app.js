@@ -33,6 +33,9 @@ const questionText = document.getElementById("questionText");
 const optionsDiv = document.getElementById("optionsDiv");
 const optionDiv = document.getElementById("option");
 
+const dropdown = document.getElementById("userDropdown");
+const user1 = dropdown.options[0];
+
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
 
