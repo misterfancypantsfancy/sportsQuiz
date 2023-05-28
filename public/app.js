@@ -1,6 +1,12 @@
 
-function httpGet(theUrl) {
-  return fetch(theUrl)
+function httpPost(theUrl, payload) {
+  return fetch(theUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -8,6 +14,25 @@ function httpGet(theUrl) {
       return response.json();
     })
     .then(data => data)
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+function fetchUserData() {
+  httpGet('/api/user')
+    .then(data => {
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+function sendQuizResults(answer) {
+  const payload = { result: answer };
+  httpPost('/api/user/results', payload)
+    .then(data => {
+    })
     .catch(error => {
       console.error('Error:', error);
     });
@@ -73,9 +98,11 @@ function checkAnswer() {
   let question = results.results[currentQuestionIndex];
   if (answer === question.correct_answer) {
     resultContainer.innerText = "Correct!";
+    sendQuizResults(true);
     correctAnswers++;
   } else {
     resultContainer.innerText = "Incorrect. The correct answer is: " + question.correct_answer;
+    sendQuizResults(false);
   }
 
   currentQuestionIndex++;
