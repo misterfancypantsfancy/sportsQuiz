@@ -17,13 +17,13 @@ app.listen(3000, () => {
 });
 
 
-//these are the routes I'll need to make data persist across... something, users I guess
+// these are the routes I'll need to make data persist across sessions and users
 
-// api/user     this one will return the data for the user, it will be a GET api.user
+// api/user     this one will return the data for the user, it will be a GET api/user
 // POST          api/user/results        or api/user/answers
 
 
-//GET
+// GET
 // create a function that whenever you request api/user it reads a json file to disc and return that json file
 // find out how to read a file in node.js
 // result.json   line 11   aka res.json
