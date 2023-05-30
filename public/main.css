@@ -43,9 +43,8 @@ button{
 
 .selection{
     display: flex;
-    align-items: center;
-    margin-left: 600px;
-    margin-top: 5px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 #result, #score{

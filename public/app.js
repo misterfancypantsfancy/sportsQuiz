@@ -1,12 +1,6 @@
-
-function httpPost(theUrl, payload) {
-  return fetch(theUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  })
+  
+function httpGet(theUrl) {
+  return fetch(theUrl)
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -14,25 +8,6 @@ function httpPost(theUrl, payload) {
       return response.json();
     })
     .then(data => data)
-    .catch(error => {
-      console.error('Error:', error);
-    });
-}
-
-function fetchUserData() {
-  httpGet('/api/user')
-    .then(data => {
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-}
-
-function sendQuizResults(answer) {
-  const payload = { result: answer };
-  httpPost('/api/user/results', payload)
-    .then(data => {
-    })
     .catch(error => {
       console.error('Error:', error);
     });
@@ -76,43 +51,41 @@ function renderQuestion(index) {
   let shuffle = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
 
   shuffle.forEach((option, idx) => {
-    const input = document.getElementById("input" + (idx + 1));
-    const label = document.getElementById("label" + (idx + 1));
+      const input = document.getElementById("input" + (idx + 1));
+      const label = document.getElementById("label" + (idx + 1));
 
-    input.setAttribute("name", "question-" + index);
-    input.setAttribute("value", option);
-    input.checked = false;
+      input.setAttribute("name", "question-" + index);
+      input.setAttribute("value", option);
+      input.checked = false;
 
-    label.innerHTML = option;
+      label.innerHTML = option;
   });
 }
 
 function checkAnswer() {
   let selectedOption = document.querySelector('input[name="question-' + currentQuestionIndex + '"]:checked');
   if (!selectedOption) {
-    resultContainer.innerText = "Please select an answer.";
-    return;
+      resultContainer.innerText = "Please select an answer.";
+      return;
   }
 
   let answer = selectedOption.value;
   let question = results.results[currentQuestionIndex];
   if (answer === question.correct_answer) {
-    resultContainer.innerText = "Correct!";
-    sendQuizResults(true);
-    correctAnswers++;
+      resultContainer.innerText = "Correct!";
+      correctAnswers++;
   } else {
-    resultContainer.innerText = "Incorrect. The correct answer is: " + question.correct_answer;
-    sendQuizResults(false);
+      resultContainer.innerText = "Incorrect. The correct answer is: " + question.correct_answer;
   }
 
   currentQuestionIndex++;
   if (currentQuestionIndex >= results.results.length) {
-    score.innerText = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
-    restartButton.style.display = "block";
-    score.style.display = "block";
-    submitButton.style.display = "none";
+      score.innerText = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
+      restartButton.style.display = "block";
+      score.style.display = "block";
+      submitButton.style.display = "none";
   } else {
-    renderQuestion(currentQuestionIndex);
+      renderQuestion(currentQuestionIndex);
   }
 }
 
@@ -125,10 +98,10 @@ function restartQuiz() {
   score.style.display = "none";
 
   httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple")
-    .then(data => {
+      .then(data => {
       results.results = data.results;
       renderQuestion(currentQuestionIndex);
-    });
+      });
 }
 
 function submitAnswer() {
@@ -146,14 +119,14 @@ startButton.addEventListener("click", () => {
 
 fetch('http://localhost:3000/api/hello')
   .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
   })
   .then(data => {
-    console.log(data.message);
+      console.log(data.message);
   })
   .catch(error => {
-    console.error('Error:', error);
+      console.error('Error:', error);
   });

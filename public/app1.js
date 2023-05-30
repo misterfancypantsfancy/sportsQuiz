@@ -1,6 +1,12 @@
 
-function httpGet(theUrl) {
-    return fetch(theUrl)
+function httpPost(theUrl, payload) {
+    return fetch(theUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -11,123 +17,146 @@ function httpGet(theUrl) {
       .catch(error => {
         console.error('Error:', error);
       });
-}
+  }
   
-let results;
+  function fetchUserData() {
+    httpGet('/api/user')
+      .then(data => {
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
   
-httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple")
+  function sendQuizResults(answer) {
+    const payload = { result: answer };
+    httpPost('/api/user/results', payload)
+      .then(data => {
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+  
+  let results;
+  
+  function send(){
+     httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple")
     .then(data => {
       results = data;
     });
+  }
   
-const startButton = document.getElementById("start-btn");
-const questionContainer = document.getElementById("question-container");
-const submitButton = document.getElementById("submit-btn");
-const resultContainer = document.getElementById("result");
-const restartButton = document.getElementById("restart-btn");
-const score = document.getElementById("score");
-
-const questionDiv = document.getElementById("questionDiv");
-const questionNumber = document.getElementById("questionNumber");
-const questionText = document.getElementById("questionText");
-const optionsDiv = document.getElementById("optionsDiv");
-const optionDiv = document.getElementById("option");
-
-const dropdown = document.getElementById("userDropdown");
-const user1 = dropdown.options[0];
-
-let currentQuestionIndex = 0;
-let correctAnswers = 0;
+  const startButton = document.getElementById("start-btn");
+  const questionContainer = document.getElementById("question-container");
+  const submitButton = document.getElementById("submit-btn");
+  const resultContainer = document.getElementById("result");
+  const restartButton = document.getElementById("restart-btn");
+  const score = document.getElementById("score");
   
-function renderQuestion(index) {
+  const questionDiv = document.getElementById("questionDiv");
+  const questionNumber = document.getElementById("questionNumber");
+  const questionText = document.getElementById("questionText");
+  const optionsDiv = document.getElementById("optionsDiv");
+  const optionDiv = document.getElementById("option");
+  
+  const dropdown = document.getElementById("userDropdown");
+  const user1 = dropdown.options[0];
+  
+  let currentQuestionIndex = 0;
+  let correctAnswers = 0;
+  
+  function renderQuestion(index) {
     questionContainer.style.display = "block";
-
-    let question = results.results[index];
-
-    questionNumber.innerText = "Question " + (index + 1);
-
-    questionText.innerHTML = question.question;
-
-    let shuffle = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
-
-    shuffle.forEach((option, idx) => {
-        const input = document.getElementById("input" + (idx + 1));
-        const label = document.getElementById("label" + (idx + 1));
-
-        input.setAttribute("name", "question-" + index);
-        input.setAttribute("value", option);
-        input.checked = false;
-
-        label.innerHTML = option;
-    });
-}
   
-function checkAnswer() {
+    let question = results.results[index];
+  
+    questionNumber.innerText = "Question " + (index + 1);
+  
+    questionText.innerHTML = question.question;
+  
+    let shuffle = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
+  
+    shuffle.forEach((option, idx) => {
+      const input = document.getElementById("input" + (idx + 1));
+      const label = document.getElementById("label" + (idx + 1));
+  
+      input.setAttribute("name", "question-" + index);
+      input.setAttribute("value", option);
+      input.checked = false;
+  
+      label.innerHTML = option;
+    });
+  }
+  
+  function checkAnswer() {
     let selectedOption = document.querySelector('input[name="question-' + currentQuestionIndex + '"]:checked');
     if (!selectedOption) {
-        resultContainer.innerText = "Please select an answer.";
-        return;
+      resultContainer.innerText = "Please select an answer.";
+      return;
     }
-
+  
     let answer = selectedOption.value;
     let question = results.results[currentQuestionIndex];
     if (answer === question.correct_answer) {
-        resultContainer.innerText = "Correct!";
-        correctAnswers++;
+      resultContainer.innerText = "Correct!";
+      sendQuizResults(true);
+      correctAnswers++;
     } else {
-        resultContainer.innerText = "Incorrect. The correct answer is: " + question.correct_answer;
+      resultContainer.innerText = "Incorrect. The correct answer is: " + question.correct_answer;
+      sendQuizResults(false);
     }
-
+  
     currentQuestionIndex++;
     if (currentQuestionIndex >= results.results.length) {
-        score.innerText = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
-        restartButton.style.display = "block";
-        score.style.display = "block";
-        submitButton.style.display = "none";
+      score.innerText = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
+      restartButton.style.display = "block";
+      score.style.display = "block";
+      submitButton.style.display = "none";
     } else {
-        renderQuestion(currentQuestionIndex);
+      renderQuestion(currentQuestionIndex);
     }
-}
+  }
   
-function restartQuiz() {
+  function restartQuiz() {
     currentQuestionIndex = 0;
     correctAnswers = 0;
     resultContainer.innerText = "";
     restartButton.style.display = "none";
     submitButton.style.display = "block";
     score.style.display = "none";
-
+  
     httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple")
-        .then(data => {
+      .then(data => {
         results.results = data.results;
         renderQuestion(currentQuestionIndex);
-        });
-}
+      });
+  }
   
-function submitAnswer() {
+  function submitAnswer() {
     checkAnswer();
-}
+  }
   
-submitButton.addEventListener("click", submitAnswer);
-restartButton.addEventListener("click", restartQuiz);
+  submitButton.addEventListener("click", submitAnswer);
+  restartButton.addEventListener("click", restartQuiz);
   
-startButton.addEventListener("click", () => {
+  startButton.addEventListener("click", () => {
     startButton.style.display = "none"
     submitButton.style.display = "block"
     renderQuestion(currentQuestionIndex)
-})
+  })
   
-fetch('http://localhost:3000/api/hello')
+  fetch('http://localhost:3000/api/hello')
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     })
     .then(data => {
-        console.log(data.message);
+      console.log(data.message);
     })
     .catch(error => {
-        console.error('Error:', error);
+      console.error('Error:', error);
     });
-  
+    
