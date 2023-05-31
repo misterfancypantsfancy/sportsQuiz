@@ -61,3 +61,11 @@ button{
     margin-top: 10px;
     margin: 0 auto;
 }
+
+#display-dashboard-btn{
+    background-color: #0c4af3;
+}
+
+#dashboard-container{
+    border: 1px solid black;
+}

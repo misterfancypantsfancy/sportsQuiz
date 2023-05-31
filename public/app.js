@@ -36,6 +36,10 @@ const optionDiv = document.getElementById("option");
 const dropdown = document.getElementById("userDropdown");
 const user1 = dropdown.options[0];
 
+const displayDashboardButton = document.getElementById("display-dashboard-btn")
+const dashboardContainer = document.getElementById("dashboard-container");
+const quizHistory = document.getElementById("quiz-history")
+
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
 
@@ -116,6 +120,14 @@ startButton.addEventListener("click", () => {
   submitButton.style.display = "block"
   renderQuestion(currentQuestionIndex)
 })
+
+displayDashboardButton.addEventListener('click', () => {
+  if (dashboardContainer.style.display === 'block') {
+    dashboardContainer.style.display = 'none';
+  } else {
+    dashboardContainer.style.display = 'block';
+  }
+});
 
 fetch('http://localhost:3000/api/hello')
   .then(response => {
