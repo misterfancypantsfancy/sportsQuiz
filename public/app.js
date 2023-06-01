@@ -108,8 +108,49 @@ function restartQuiz() {
       });
 }
 
+function updateQuizHistory() {
+  // Retrieve the total questions answered by user1 from the server
+  console.log('Making fetch request');
+  fetch('http://localhost:3000/api/user1')
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Update the quizHistory element with the total questions answered
+      quizHistory.innerText = "Total questions answered: " + data.totalQuestionsAnswered;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // Handle the error
+    });
+}
+
+// Call the function to update the quiz history initially
+updateQuizHistory();
+
 function submitAnswer() {
   checkAnswer();
+  console.log('Making POST request');
+  fetch('http://localhost:3000/api/user1', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ question: questionText.innerText }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      // Handle the successful update
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // Handle the error
+    });
 }
 
 submitButton.addEventListener("click", submitAnswer);
@@ -128,17 +169,3 @@ displayDashboardButton.addEventListener('click', () => {
     dashboardContainer.style.display = 'block';
   }
 });
-
-fetch('http://localhost:3000/api/hello')
-  .then(response => {
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
-      }
-      return response.json();
-  })
-  .then(data => {
-      console.log(data.message);
-  })
-  .catch(error => {
-      console.error('Error:', error);
-  });
