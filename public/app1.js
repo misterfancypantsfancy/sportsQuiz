@@ -1,4 +1,3 @@
-  
 function httpGet(theUrl) {
   return fetch(theUrl)
     .then(response => {

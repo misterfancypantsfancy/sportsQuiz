@@ -7,12 +7,14 @@ const app = express();
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.json()); // Parse JSON request bodies
 
-// Endpoint to get the total number of questions answered by user1
-app.get('/api/user1', (req, res) => {
-  console.log('Reached user1 endpoint (GET)');
+// Endpoint to get the total number of questions answered by a user
+app.get('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  console.log(`Reached ${userId} endpoint (GET)`);
+
   const dataFilePath = path.join(__dirname, '..', 'backup', 'quizdata.json');
-
 
   // Read the quiz data from the JSON file
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
@@ -24,8 +26,8 @@ app.get('/api/user1', (req, res) => {
 
     try {
       const quizData = JSON.parse(data);
-      const user1Data = quizData.user1 || { answered: [] };
-      const totalQuestionsAnswered = user1Data.answered.length;
+      const userData = quizData[userId] || { answered: [] };
+      const totalQuestionsAnswered = userData.answered.length;
 
       res.json({ totalQuestionsAnswered });
     } catch (error) {
@@ -35,11 +37,12 @@ app.get('/api/user1', (req, res) => {
   });
 });
 
-// Endpoint to update the total number of questions answered by user1
-app.post('/api/user1', express.json(), (req, res) => {
-  console.log('Reached user1 endpoint (POST)');
-  const dataFilePath = path.join(__dirname, '..', 'backup', 'quizdata.json');
+// Endpoint to update the total number of questions answered by a user
+app.post('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  console.log(`Reached ${userId} endpoint (POST)`);
 
+  const dataFilePath = path.join(__dirname, '..', 'backup', 'quizdata.json');
 
   // Read the quiz data from the JSON file
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
@@ -51,10 +54,10 @@ app.post('/api/user1', express.json(), (req, res) => {
 
     try {
       const quizData = JSON.parse(data);
-      const user1Data = quizData.user1 || { answered: [] };
+      const userData = quizData[userId] || { answered: [] };
 
       // Update the answered questions count
-      user1Data.answered.push(req.body.question);
+      userData.answered.push(req.body.question);
 
       // Write the updated quiz data back to the JSON file
       fs.writeFile(dataFilePath, JSON.stringify(quizData), (err) => {
