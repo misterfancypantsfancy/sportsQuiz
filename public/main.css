@@ -4,6 +4,7 @@ body{
     text-align: center;
     padding: 20px;
     background: rgb(23, 47, 99);
+    filter: grayscale(100%);
 }
 
 h1{
