@@ -48,7 +48,7 @@ function renderQuestion(index) {
 
   let question = results.results[index];
 
-  questionNumber.innerText = "Question " + (index + 1);
+  questionNumber.innerHTML = "Question " + (index + 1);
 
   questionText.innerHTML = question.question;
 
@@ -69,22 +69,22 @@ function renderQuestion(index) {
 function checkAnswer() {
   let selectedOption = document.querySelector('input[name="question-' + currentQuestionIndex + '"]:checked');
   if (!selectedOption) {
-      resultContainer.innerText = "Please select an answer.";
+      resultContainer.innerHTML = "Please select an answer.";
       return;
   }
 
   let answer = selectedOption.value;
   let question = results.results[currentQuestionIndex];
   if (answer === question.correct_answer) {
-      resultContainer.innerText = "Correct!";
+      resultContainer.innerHTML = "Correct!";
       correctAnswers++;
   } else {
-      resultContainer.innerText = "Incorrect. The correct answer is: " + question.correct_answer;
+      resultContainer.innerHTML = "Incorrect. The correct answer is: " + question.correct_answer;
   }
 
   currentQuestionIndex++;
   if (currentQuestionIndex >= results.results.length) {
-      score.innerText = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
+      score.innerHTML = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
       restartButton.style.display = "block";
       score.style.display = "block";
       submitButton.style.display = "none";
@@ -96,7 +96,7 @@ function checkAnswer() {
 function restartQuiz() {
   currentQuestionIndex = 0;
   correctAnswers = 0;
-  resultContainer.innerText = "";
+  resultContainer.innerHTML = "";
   restartButton.style.display = "none";
   submitButton.style.display = "block";
   score.style.display = "none";
@@ -120,7 +120,7 @@ function updateQuizHistory() {
     })
     .then((data) => {
       // Update the quizHistory element with the total questions answered
-      quizHistory.innerText = "Total questions answered: " + data.totalQuestionsAnswered;
+      quizHistory.innerHTML = "Total questions answered: " + data.totalQuestionsAnswered;
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -139,7 +139,7 @@ function submitAnswer() {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ question: questionText.innerText }),
+    body: JSON.stringify({ question: questionText.innerHTML }),
   })
     .then((response) => {
       if (!response.ok) {
