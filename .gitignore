@@ -130,5 +130,6 @@ dist
 .pnp.*
 
 quizdata.json
-
 backup/
+app1.js
+server1.js
