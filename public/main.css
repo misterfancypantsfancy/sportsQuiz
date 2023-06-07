@@ -1,10 +1,12 @@
+*{
+    filter: grayscale(100%);  
+}
 
 body{
     font-family: Arial, sans-serif;
     text-align: center;
     padding: 20px;
     background: rgb(23, 47, 99);
-    filter: grayscale(100%);
 }
 
 h1{
