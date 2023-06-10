@@ -33,11 +33,11 @@ const optionsDiv = document.getElementById("optionsDiv");
 const optionDiv = document.getElementById("option");
 
 const dropdown = document.getElementById("userDropdown");
-const user1 = dropdown.options[0];
+const userId = dropdown.value; // Get the selected user ID
 
-const displayDashboardButton = document.getElementById("display-dashboard-btn")
+const displayDashboardButton = document.getElementById("display-dashboard-btn");
 const dashboardContainer = document.getElementById("dashboard-container");
-const quizHistory = document.getElementById("quiz-history")
+const quizHistory = document.getElementById("quiz-history");
 
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
@@ -54,41 +54,41 @@ function renderQuestion(index) {
   let shuffle = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
 
   shuffle.forEach((option, idx) => {
-      const input = document.getElementById("input" + (idx + 1));
-      const label = document.getElementById("label" + (idx + 1));
+    const input = document.getElementById("input" + (idx + 1));
+    const label = document.getElementById("label" + (idx + 1));
 
-      input.setAttribute("name", "question-" + index);
-      input.setAttribute("value", option);
-      input.checked = false;
+    input.setAttribute("name", "question-" + index);
+    input.setAttribute("value", option);
+    input.checked = false;
 
-      label.innerHTML = option;
+    label.innerHTML = option;
   });
 }
 
 function checkAnswer() {
   let selectedOption = document.querySelector('input[name="question-' + currentQuestionIndex + '"]:checked');
   if (!selectedOption) {
-      resultContainer.innerHTML = "Please select an answer.";
-      return;
+    resultContainer.innerHTML = "Please select an answer.";
+    return;
   }
 
   let answer = selectedOption.value;
   let question = results.results[currentQuestionIndex];
   if (answer === question.correct_answer) {
-      resultContainer.innerHTML = "Correct!";
-      correctAnswers++;
+    resultContainer.innerHTML = "Correct!";
+    correctAnswers++;
   } else {
-      resultContainer.innerHTML = "Incorrect. The correct answer is: " + question.correct_answer;
+    resultContainer.innerHTML = "Incorrect. The correct answer is: " + question.correct_answer;
   }
 
   currentQuestionIndex++;
   if (currentQuestionIndex >= results.results.length) {
-      score.innerHTML = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
-      restartButton.style.display = "block";
-      score.style.display = "block";
-      submitButton.style.display = "none";
+    score.innerHTML = "You got " + correctAnswers + " out of " + results.results.length + " questions correct!";
+    restartButton.style.display = "block";
+    score.style.display = "block";
+    submitButton.style.display = "none";
   } else {
-      renderQuestion(currentQuestionIndex);
+    renderQuestion(currentQuestionIndex);
   }
 }
 
@@ -101,16 +101,16 @@ function restartQuiz() {
   score.style.display = "none";
 
   httpGet("https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple")
-      .then(data => {
+    .then(data => {
       results.results = data.results;
       renderQuestion(currentQuestionIndex);
-      });
+    });
 }
 
 function updateQuizHistory() {
-  // Retrieve the total questions answered by user1 from the server
+  // Retrieve the total questions answered by the selected user from the server
   console.log('Making fetch request');
-  fetch('http://localhost:3000/api/user1')
+  fetch('http://localhost:3000/api/users/' + userId)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -133,7 +133,7 @@ updateQuizHistory();
 function submitAnswer() {
   checkAnswer();
   console.log('Making POST request');
-  fetch('http://localhost:3000/api/user1', {
+  fetch('http://localhost:3000/api/users/' + userId, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -156,10 +156,10 @@ submitButton.addEventListener("click", submitAnswer);
 restartButton.addEventListener("click", restartQuiz);
 
 startButton.addEventListener("click", () => {
-  startButton.style.display = "none"
-  submitButton.style.display = "block"
-  renderQuestion(currentQuestionIndex)
-})
+  startButton.style.display = "none";
+  submitButton.style.display = "block";
+  renderQuestion(currentQuestionIndex);
+});
 
 displayDashboardButton.addEventListener('click', () => {
   if (dashboardContainer.style.display === 'block') {
