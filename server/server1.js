@@ -14,7 +14,7 @@ app.get('/api/users/:userId', (req, res) => {
   const { userId } = req.params;
   console.log(`Reached ${userId} endpoint (GET)`);
 
-  const dataFilePath = path.join(__dirname, '..', 'backup', 'quizdata.json');
+  const dataFilePath = path.join(__dirname, '..', 'db', 'quizdata.json');
 
   // Read the quiz data from the JSON file
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
@@ -42,7 +42,7 @@ app.post('/api/users/:userId', (req, res) => {
   const { userId } = req.params;
   console.log(`Reached ${userId} endpoint (POST)`);
 
-  const dataFilePath = path.join(__dirname, '..', 'backup', 'quizdata.json');
+  const dataFilePath = path.join(__dirname, '..', 'db', 'quizdata.json');
 
   // Read the quiz data from the JSON file
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
