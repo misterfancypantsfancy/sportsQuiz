@@ -9,71 +9,60 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json()); // Parse JSON request bodies
 
-// Endpoint to get the total number of questions answered by a user
+const dbFilePath = path.join(__dirname, '..', 'db', 'quizdata.json');
+
+function initializeUserData(userId) {
+  return {
+    [userId]: {
+      answered: [],
+    },
+  };
+}
+
+function readQuizData() {
+  try {
+    const data = fs.readFileSync(dbFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading quiz data:', error);
+    return {};
+  }
+}
+
+function writeQuizData(quizData) {
+  try {
+    fs.writeFileSync(dbFilePath, JSON.stringify(quizData, null, 2));
+  } catch (error) {
+    console.error('Error writing quiz data:', error);
+  }
+}
+
 app.get('/api/users/:userId', (req, res) => {
   const { userId } = req.params;
   console.log(`Reached ${userId} endpoint (GET)`);
 
-  const dataFilePath = path.join(__dirname, '..', 'db', 'quizdata.json');
+  const quizData = readQuizData();
+  const userData = quizData[userId] || { answered: [] };
+  const totalQuestionsAnswered = userData.answered.length;
 
-  // Read the quiz data from the JSON file
-  fs.readFile(dataFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading quiz data:', err);
-      res.status(500).json({ error: 'Failed to retrieve quiz data' });
-      return;
-    }
-
-    try {
-      const quizData = JSON.parse(data);
-      const userData = quizData[userId] || { answered: [] };
-      const totalQuestionsAnswered = userData.answered.length;
-
-      res.json({ totalQuestionsAnswered });
-    } catch (error) {
-      console.error('Error parsing quiz data:', error);
-      res.status(500).json({ error: 'Failed to parse quiz data' });
-    }
-  });
+  res.json({ totalQuestionsAnswered });
 });
 
-// Endpoint to update the total number of questions answered by a user
 app.post('/api/users/:userId', (req, res) => {
   const { userId } = req.params;
   console.log(`Reached ${userId} endpoint (POST)`);
 
-  const dataFilePath = path.join(__dirname, '..', 'db', 'quizdata.json');
+  const quizData = readQuizData();
+  const userData = quizData[userId] || initializeUserData(userId);
 
-  // Read the quiz data from the JSON file
-  fs.readFile(dataFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading quiz data:', err);
-      res.status(500).json({ error: 'Failed to retrieve quiz data' });
-      return;
-    }
+  // Update the answered questions count
+  userData.answered.push(req.body.question);
 
-    try {
-      const quizData = JSON.parse(data);
-      const userData = quizData[userId] || { answered: [] };
+  // Write the updated quiz data back to the JSON file
+  quizData[userId] = userData;
+  writeQuizData(quizData);
 
-      // Update the answered questions count
-      userData.answered.push(req.body.question);
-
-      // Write the updated quiz data back to the JSON file
-      fs.writeFile(dataFilePath, JSON.stringify(quizData), (err) => {
-        if (err) {
-          console.error('Error writing quiz data:', err);
-          res.status(500).json({ error: 'Failed to update quiz data' });
-          return;
-        }
-
-        res.sendStatus(200);
-      });
-    } catch (error) {
-      console.error('Error parsing quiz data:', error);
-      res.status(500).json({ error: 'Failed to parse quiz data' });
-    }
-  });
+  res.sendStatus(200);
 });
 
 app.listen(3000, () => {
